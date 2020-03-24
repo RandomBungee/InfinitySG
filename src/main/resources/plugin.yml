@@ -1,0 +1,10 @@
+name: InfinitySG
+author: RandomBungee
+version: 2.0
+
+main: de.dynex.sg.InfinitySG
+
+commands:
+  build:
+  stats:
+  setup:
