@@ -7,14 +7,11 @@ At 22:15
 
 import de.dynex.sg.InfinitySG;
 import de.dynexapi.mysql.api.CoinsAPI;
+import de.dynexapi.mysql.api.DyePlayer;
+import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.Team;
 
 public class Score {
 
@@ -24,90 +21,83 @@ public class Score {
     this.infinitySG = infinitySG;
   }
 
-  @SuppressWarnings("deprecation")
   public void setScoreboard(Player player) {
-    Scoreboard sb = Bukkit.getScoreboardManager().getNewScoreboard();
-    Objective objective = sb.getObjective("aaa");
-    if (objective == null) {
-      objective = sb.registerNewObjective("aaa", "bbb");
-    }
-    objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+    DyePlayer dyePlayer = new DyePlayer(player.getName());
+    Scoreboard scoreboard = new Scoreboard();
+    ScoreboardObjective scoreboardObjective = scoreboard.registerObjective("§InfinitySG", IScoreboardCriteria.b);
+    PacketPlayOutScoreboardObjective objectiveCreate = new PacketPlayOutScoreboardObjective(scoreboardObjective, 0);
+    PacketPlayOutScoreboardObjective objectiveRemove = new PacketPlayOutScoreboardObjective(scoreboardObjective, 1);
+    PacketPlayOutScoreboardDisplayObjective displayObjective = new PacketPlayOutScoreboardDisplayObjective(1, scoreboardObjective);
+    scoreboardObjective.setDisplayName("§InfinitySG");
 
-    objective.setDisplayName("§6DynexMC §8| §3Infinity§cSG");
+    ScoreboardScore scoreboardScore0 = new ScoreboardScore(scoreboard, scoreboardObjective, "§a");
+    ScoreboardScore scoreboardScore1 = new ScoreboardScore(scoreboard, scoreboardObjective, "§c● §8§l▎ §7Rang");
+    ScoreboardScore scoreboardScore2 = new ScoreboardScore(scoreboard, scoreboardObjective, "§8» §7" + dyePlayer.getColor() + dyePlayer.getPrefix());
+    ScoreboardScore scoreboardScore3 = new ScoreboardScore(scoreboard, scoreboardObjective, "§b");
+    ScoreboardScore scoreboardScore4 = new ScoreboardScore(scoreboard, scoreboardObjective, "§6● §8§l▎ §7Coins");
+    ScoreboardScore scoreboardScore5 = new ScoreboardScore(scoreboard, scoreboardObjective, "§8» §6" + CoinsAPI.getCoins(player.getName()));
+    ScoreboardScore scoreboardScore6 = new ScoreboardScore(scoreboard, scoreboardObjective, "§c");
+    ScoreboardScore scoreboardScore7 = new ScoreboardScore(scoreboard, scoreboardObjective, "§e● §8§l▎ §7Online");
+    ScoreboardScore scoreboardScore8 = new ScoreboardScore(scoreboard, scoreboardObjective, "§8» §e" + Bukkit.getOnlinePlayers().size()
+            + "§7/§e" + Bukkit.getMaxPlayers());
+    ScoreboardScore scoreboardScore9 = new ScoreboardScore(scoreboard, scoreboardObjective, "§d");
+    ScoreboardScore scoreboardScore10 = new ScoreboardScore(scoreboard, scoreboardObjective, "§a● §8§l▎ §7K/D");
+    ScoreboardScore scoreboardScore11 = new ScoreboardScore(scoreboard, scoreboardObjective, "§8» §a" + infinitySG.stats.getKills(player.getName())
+            +  "§7/§a" + infinitySG.stats.getDeaths(player.getName()));
+    ScoreboardScore scoreboardScore12 = new ScoreboardScore(scoreboard, scoreboardObjective, "§e");
+    ScoreboardScore scoreboardScore13 = new ScoreboardScore(scoreboard, scoreboardObjective, "§8§m--------------- ");
 
-    objective.getScore("§a").setScore(15);
-    objective.getScore("§f§6").setScore(14);
-    objective.getScore("§c● §8§l▎ §7Rang").setScore(13);
-    objective.getScore("§8» " + "SOON").setScore(12);
-    objective.getScore("§d").setScore(11);
-    objective.getScore("§6● §8§l▎ §7Coins").setScore(10);
-    objective.getScore(updateTeam(sb, "Coins", "§8» §e" + CoinsAPI.getCoins(player.getName()), "§e",
-        ChatColor.GREEN)).setScore(9);
-    objective.getScore("§c").setScore(8);
-    objective.getScore("§e● §8§l▎ §7Online").setScore(7);
-    objective.getScore(updateTeam(sb, "User", "§8» §e" + Bukkit.getOnlinePlayers().size() + "", "",
-        ChatColor.GOLD)).setScore(6);
-    objective.getScore("§4").setScore(5);
-    objective.getScore("§a● §8§l▎ §7K/D").setScore(4);
-    objective.getScore(updateTeam(sb, "KD",
-        "§8» §e" + infinitySG.stats.getKills(player.getName()) + "§7/" + infinitySG.stats
-            .getDeaths(player.getName()), "", ChatColor.BLACK)).setScore(3);
-    objective.getScore("§a§l").setScore(2);
-    objective.getScore("§8§m--------------- ").setScore(1);
-    player.setScoreboard(sb);
+    scoreboardScore0.setScore(14);
+    scoreboardScore1.setScore(13);
+    scoreboardScore2.setScore(12);
+    scoreboardScore3.setScore(11);
+    scoreboardScore4.setScore(10);
+    scoreboardScore5.setScore(9);
+    scoreboardScore6.setScore(8);
+    scoreboardScore7.setScore(7);
+    scoreboardScore8.setScore(6);
+    scoreboardScore9.setScore(5);
+    scoreboardScore10.setScore(4);
+    scoreboardScore11.setScore(3);
+    scoreboardScore12.setScore(2);
+    scoreboardScore13.setScore(1);
+
+    PacketPlayOutScoreboardScore registerScore0 = new PacketPlayOutScoreboardScore(scoreboardScore0);
+    PacketPlayOutScoreboardScore registerScore1 = new PacketPlayOutScoreboardScore(scoreboardScore1);
+    PacketPlayOutScoreboardScore registerScore2 = new PacketPlayOutScoreboardScore(scoreboardScore2);
+    PacketPlayOutScoreboardScore registerScore3 = new PacketPlayOutScoreboardScore(scoreboardScore3);
+    PacketPlayOutScoreboardScore registerScore4 = new PacketPlayOutScoreboardScore(scoreboardScore4);
+    PacketPlayOutScoreboardScore registerScore5 = new PacketPlayOutScoreboardScore(scoreboardScore5);
+    PacketPlayOutScoreboardScore registerScore6 = new PacketPlayOutScoreboardScore(scoreboardScore6);
+    PacketPlayOutScoreboardScore registerScore7 = new PacketPlayOutScoreboardScore(scoreboardScore7);
+    PacketPlayOutScoreboardScore registerScore8 = new PacketPlayOutScoreboardScore(scoreboardScore8);
+    PacketPlayOutScoreboardScore registerScore9 = new PacketPlayOutScoreboardScore(scoreboardScore9);
+    PacketPlayOutScoreboardScore registerScore10 = new PacketPlayOutScoreboardScore(scoreboardScore10);
+    PacketPlayOutScoreboardScore registerScore11 = new PacketPlayOutScoreboardScore(scoreboardScore11);
+    PacketPlayOutScoreboardScore registerScore12 = new PacketPlayOutScoreboardScore(scoreboardScore12);
+    PacketPlayOutScoreboardScore registerScore13 = new PacketPlayOutScoreboardScore(scoreboardScore13);
+
+    sendPacket(player, objectiveRemove);
+    sendPacket(player, objectiveCreate);
+    sendPacket(player, displayObjective);
+    sendPacket(player, registerScore0);
+    sendPacket(player, registerScore1);
+    sendPacket(player, registerScore2);
+    sendPacket(player, registerScore3);
+    sendPacket(player, registerScore4);
+    sendPacket(player, registerScore5);
+    sendPacket(player, registerScore6);
+    sendPacket(player, registerScore7);
+    sendPacket(player, registerScore8);
+    sendPacket(player, registerScore9);
+    sendPacket(player, registerScore10);
+    sendPacket(player, registerScore11);
+    sendPacket(player, registerScore12);
+    sendPacket(player, registerScore13);
   }
 
-  @SuppressWarnings("deprecation")
-  public void updateScoreboard(Player player) {
-    if (player.getScoreboard() == null) {
-      setScoreboard(player);
-    }
-    Scoreboard sb = player.getScoreboard();
-    Objective objective = sb.getObjective("aaa");
-
-    objective.getScore(updateTeam(sb, "Coins", "§8» §e" + CoinsAPI.getCoins(player.getName()), "§e",
-        ChatColor.GREEN)).setScore(9);
-    objective.getScore(updateTeam(sb, "User", "§8» §e" + Bukkit.getOnlinePlayers().size() + "", "",
-        ChatColor.GOLD)).setScore(6);
-    objective.getScore(updateTeam(sb, "KD",
-        "§8» §e" + infinitySG.stats.getKills(player.getName()) + "§7/" + infinitySG.stats
-            .getDeaths(player.getName())
-            + "", "",
-        ChatColor.BLACK)).setScore(3);
-  }
-
-  public Team getTeam(Scoreboard sb, String Team, String prefix, String suffix) {
-    Team team = sb.getTeam(Team);
-    if (team == null) {
-      team = sb.registerNewTeam(Team);
-    }
-    team.setPrefix(prefix);
-    team.setSuffix(suffix);
-    return team;
-  }
-
-  public String updateTeam(Scoreboard sb, String Team, String prefix, String suffix,
-      ChatColor entry) {
-    Team team = sb.getTeam(Team);
-    if (team == null) {
-      team = sb.registerNewTeam(Team);
-    }
-    team.setPrefix(prefix);
-    team.setSuffix(suffix);
-    team.addEntry(entry.toString());
-    return entry.toString();
-  }
-
-  public void startScheduler() {
-    new BukkitRunnable() {
-
-      @Override
-      public void run() {
-        for (Player all : Bukkit.getOnlinePlayers()) {
-          updateScoreboard(all);
-        }
-      }
-    }.runTaskTimer(infinitySG.infinitySG, 20, 20 * 5);
+  private static void sendPacket(Player player, Packet<?> packet) {
+    ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
   }
 
 }

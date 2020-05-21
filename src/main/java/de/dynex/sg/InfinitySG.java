@@ -15,11 +15,10 @@ import de.dynex.sg.listener.MoveListener;
 import de.dynex.sg.mysql.MySQL;
 import de.dynex.sg.mysql.api.Stats;
 import de.dynex.sg.mysql.config.ConfigManager;
-import de.dynex.sg.utils.ChestFill;
-import de.dynex.sg.utils.ItemBuilder;
-import de.dynex.sg.utils.Locations;
-import de.dynex.sg.utils.Score;
+import de.dynex.sg.utils.*;
+
 import java.util.ArrayList;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
 import org.bukkit.World;
@@ -38,6 +37,7 @@ public class InfinitySG extends JavaPlugin {
   public ArrayList<Player> build;
   public ChestFill chestFill;
   public Score score;
+  public int cheat = 0;
 
   @Override
   public void onEnable() {
@@ -45,10 +45,6 @@ public class InfinitySG extends JavaPlugin {
     initCommands();
     initListeners();
     getServer().getConsoleSender().sendMessage(prefix + "§7Plugin wurde gestartet!");
-  }
-
-  @Override
-  public void onDisable() {
   }
 
   private void initFunctions() {
@@ -63,7 +59,7 @@ public class InfinitySG extends JavaPlugin {
         configManager.yamlConfiguration.getString("MySQL.host"),
         "3306");
     stats = new Stats(this);
-    build = new ArrayList<Player>();
+    build = new ArrayList<>();
     chestFill = new ChestFill(this);
     score = new Score(this);
     chestFill.onRefillTime();

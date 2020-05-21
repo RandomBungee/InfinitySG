@@ -27,11 +27,8 @@ public class EnvormentListener implements Listener {
 
   @EventHandler
   public void onBlockPlace(BlockPlaceEvent e) {
-    if (e.getBlock().getType() == Material.FLINT_AND_STEEL || infinitySG.build.contains(e.getPlayer())) {
-      e.setCancelled(false);
-    } else {
-      e.setCancelled(true);
-    }
+    e.setCancelled(
+        e.getBlock().getType() != Material.FIRE && !infinitySG.build.contains(e.getPlayer()));
   }
 
   @EventHandler
@@ -60,21 +57,15 @@ public class EnvormentListener implements Listener {
       Player p = (Player) e.getEntity();
       if (p.getLocation().getY() >= 170 || e.getCause() == EntityDamageEvent.DamageCause.FALL) {
         e.setCancelled(true);
-      } else {
       }
     }
-
   }
 
   @EventHandler
   public void onDamageEntityByBlock(EntityDamageByBlockEvent e) {
     if (e.getEntity() instanceof Player) {
       Player p = (Player) e.getEntity();
-      if (p.getLocation().getY() >= 170) {
-        e.setCancelled(true);
-      } else {
-        e.setCancelled(false);
-      }
+      e.setCancelled(p.getLocation().getY() >= 170);
     }
   }
 }

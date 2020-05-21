@@ -6,6 +6,7 @@ At 22:21
 */
 
 import de.dynex.sg.InfinitySG;
+import de.dynexapi.mysql.api.DyePlayer;
 import javafx.scene.chart.BubbleChart;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -14,6 +15,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.material.Dye;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class JoinListener implements Listener {
@@ -27,6 +29,7 @@ public class JoinListener implements Listener {
   @EventHandler
   public void onJoin(PlayerJoinEvent event) {
     Player player = event.getPlayer();
+    DyePlayer dyePlayer = new DyePlayer(player.getName());
     if(!infinitySG.stats.playerExits(player.getName())) {
       infinitySG.stats.createPlayer(player.getName());
     }
@@ -39,18 +42,15 @@ public class JoinListener implements Listener {
     player.getInventory().setArmorContents(null);
     player.setFireTicks(0);
     infinitySG.itemBuilder.setStartItems(player);
-    for(Player all : Bukkit.getOnlinePlayers()) {
-      infinitySG.score.setScoreboard(all);
-    }
-    infinitySG.score.startScheduler();
+    infinitySG.score.setScoreboard(player);
     new BukkitRunnable() {
       @Override
       public void run() {
         for(Player all : Bukkit.getOnlinePlayers()) {
-          all.sendMessage(infinitySG.prefix + player.getDisplayName() + " §7hat §3Infinity§cSG §7betreten!");
+          all.sendMessage(infinitySG.prefix + player.getDisplayName() +  " §7hat §3Infinity§cSG §7betreten!");
         }
       }
-    }.runTaskLaterAsynchronously(infinitySG.infinitySG, 5);
+    }.runTaskLaterAsynchronously(infinitySG.infinitySG, 1);
   }
 
   @EventHandler
