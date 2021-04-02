@@ -1,31 +1,17 @@
 package de.dynex.sg;
-/*
-Class was created by RandomBungee
-On 23.03.2020
-At 22:12
-*/
 
-import de.dynex.sg.commands.BuildCMD;
-import de.dynex.sg.commands.SetupCMD;
-import de.dynex.sg.commands.StatsCMD;
-import de.dynex.sg.listener.DeathListener;
-import de.dynex.sg.listener.EnvormentListener;
-import de.dynex.sg.listener.JoinListener;
-import de.dynex.sg.listener.MoveListener;
-import de.dynex.sg.mysql.MySQL;
-import de.dynex.sg.mysql.api.Stats;
-import de.dynex.sg.mysql.config.ConfigManager;
-import de.dynex.sg.utils.*;
-
+import de.dynex.sg.command.*;
+import de.dynex.sg.listener.*;
+import de.dynex.sg.mysql.*;
+import de.dynex.sg.config.*;
+import de.dynex.sg.util.*;
 import java.util.ArrayList;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Difficulty;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class InfinitySG extends JavaPlugin {
+  public InfinitySG() {}
 
   public InfinitySG infinitySG;
   public String prefix = "§8| §3§lInfinity§cSG §8» §r";
@@ -33,18 +19,21 @@ public class InfinitySG extends JavaPlugin {
   public ItemBuilder itemBuilder;
   public ConfigManager configManager;
   public MySQL mySQL;
-  public Stats stats;
   public ArrayList<Player> build;
   public ChestFill chestFill;
-  public Score score;
-  public int cheat = 0;
 
   @Override
   public void onEnable() {
     initFunctions();
     initCommands();
     initListeners();
-    getServer().getConsoleSender().sendMessage(prefix + "§7Plugin wurde gestartet!");
+    System.out.println("Plugin enabled");
+  }
+
+  @Override
+  public void onDisable() {
+    mySQL.close();
+    System.out.println("Plugin Disabled");
   }
 
   private void initFunctions() {
@@ -58,10 +47,8 @@ public class InfinitySG extends JavaPlugin {
         configManager.yamlConfiguration.getString("MySQL.data"),
         configManager.yamlConfiguration.getString("MySQL.host"),
         "3306");
-    stats = new Stats(this);
     build = new ArrayList<>();
     chestFill = new ChestFill(this);
-    score = new Score(this);
     chestFill.onRefillTime();
 
     mySQL.connect();
@@ -78,15 +65,15 @@ public class InfinitySG extends JavaPlugin {
 
   private void initListeners() {
     getServer().getPluginManager().registerEvents(new JoinListener(this), this);
-    getServer().getPluginManager().registerEvents(new EnvormentListener(this), this);
-    getServer().getPluginManager().registerEvents(new MoveListener(this), this);
+    getServer().getPluginManager().registerEvents(new CanceledInteractsListener(this), this);
+    getServer().getPluginManager().registerEvents(new MoveListener(), this);
     getServer().getPluginManager().registerEvents(new DeathListener(this), this);
     getServer().getPluginManager().registerEvents(new ChestFill(this), this);
   }
 
   private void initCommands() {
-    getCommand("build").setExecutor(new BuildCMD(this));
-    getCommand("setup").setExecutor(new SetupCMD(this));
-    getCommand("stats").setExecutor(new StatsCMD(this));
+    getCommand("build").setExecutor(new BuildCommand(this));
+    getCommand("setup").setExecutor(new SetupCommand(this));
+    getCommand("stats").setExecutor(new StatsCommand(this));
   }
 }

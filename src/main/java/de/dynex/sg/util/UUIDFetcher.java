@@ -1,4 +1,4 @@
-package de.dynex.sg.utils;
+package de.dynex.sg.util;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -13,14 +13,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
-/*
-Class was created by RandomBungee
-On 23.03.2020
-At 22:27
-*/
-
 public class UUIDFetcher {
-
+  public UUIDFetcher() {}
   /**
    * Date when name changes were introduced
    *
@@ -28,10 +22,8 @@ public class UUIDFetcher {
    */
   public static final long FEBRUARY_2015 = 1422748800000L;
 
-
   private static Gson gson = new GsonBuilder()
       .registerTypeAdapter(UUID.class, new UUIDTypeAdapter()).create();
-
   private static final String UUID_URL = "https://api.mojang.com/users/profiles/minecraft/%s?at=%d";
   private static final String NAME_URL = "https://api.mojang.com/user/profiles/%s/names";
   private static Map<String, UUID> uuidCache = new HashMap<String, UUID>();
@@ -47,7 +39,10 @@ public class UUIDFetcher {
    * @param name   The name
    * @param action Do what you want to do with the uuid her
    */
-  public static void getUUID(String name, Consumer<UUID> action) {
+  public static void getUUID(
+    String name,
+    Consumer<UUID> action
+  ) {
     pool.execute(() -> action.accept(getUUID(name)));
   }
 
@@ -69,7 +64,11 @@ public class UUIDFetcher {
    * @param timestamp Time when the player had this name in milliseconds
    * @param action    Do what you want to do with the uuid her
    */
-  public static void getUUIDAt(String name, long timestamp, Consumer<UUID> action) {
+  public static void getUUIDAt(
+    String name,
+    long timestamp,
+    Consumer<UUID> action
+  ) {
     pool.execute(() -> action.accept(getUUIDAt(name, timestamp)));
   }
 
@@ -80,7 +79,10 @@ public class UUIDFetcher {
    * @param timestamp Time when the player had this name in milliseconds
    * @see UUIDFetcher#FEBRUARY_2015
    */
-  public static UUID getUUIDAt(String name, long timestamp) {
+  public static UUID getUUIDAt(
+    String name,
+    long timestamp
+  ) {
     name = name.toLowerCase();
     if (uuidCache.containsKey(name)) {
       return uuidCache.get(name);
@@ -109,7 +111,10 @@ public class UUIDFetcher {
    * @param uuid   The uuid
    * @param action Do what you want to do with the name her
    */
-  public static void getName(UUID uuid, Consumer<String> action) {
+  public static void getName(
+    UUID uuid,
+    Consumer<String> action
+  ) {
     pool.execute(() -> action.accept(getName(uuid)));
   }
 

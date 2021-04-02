@@ -1,9 +1,4 @@
-package de.dynex.sg.mysql.config;
-/*
-Class was created by RandomBungee
-On 23.03.2020
-At 22:22
-*/
+package de.dynex.sg.config;
 
 import java.io.File;
 import java.io.IOException;

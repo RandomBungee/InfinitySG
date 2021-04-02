@@ -1,78 +1,75 @@
 package de.dynex.sg.listener;
-/*
-Class was created by RandomBungee
-On 23.03.2020
-At 22:49
-*/
 
-import de.dynex.sg.InfinitySG;
-import de.dynexapi.mysql.api.CoinsAPI;
-import de.dynexapi.mysql.api.DyePlayer;
-import org.bukkit.Bukkit;
+import de.dynex.sg.*;
+import de.dynex.sg.mysql.*;
+import de.dynex.sg.mysql.api.*;
+import de.dynex.sg.util.UUIDFetcher;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.Dye;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 public class DeathListener implements Listener {
-
-  private InfinitySG infinitySG;
+  private final InfinitySG infinitySG;
+  private final StatsPlayer statsPlayer;
 
   public DeathListener(InfinitySG infinitySG) {
     this.infinitySG = infinitySG;
+    this.statsPlayer = StatsPlayerRepository.create(MySQL.connection);
   }
 
   @EventHandler
-  public void onDeath(PlayerDeathEvent event) {
-    Player player = event.getEntity();
-    infinitySG.score.setScoreboard(player);
-    event.setDeathMessage(null);
+  public void playerDeath(PlayerDeathEvent playerDeathEvent) {
+    Player player = playerDeathEvent.getEntity();
+    String playerUniqueId = UUIDFetcher.getUUID(player.getName()).toString();
+    int playerKills = statsPlayer.kills(playerUniqueId);
+    int playerDeaths = statsPlayer.deaths(playerUniqueId);
+    playerDeathEvent.setDeathMessage(null);
     for (ItemStack itemStack :
-        event.getDrops()) {
+      playerDeathEvent.getDrops()) {
       Bukkit.getWorld(player.getWorld().getName()).dropItem(player.getLocation(), itemStack);
     }
     player.teleport(infinitySG.locations.getLocation("spawn"));
-    event.getDrops().clear();
     if (player.getKiller() != null) {
       Player killer = player.getKiller();
-      DyePlayer dyePlayer = new DyePlayer(killer.getName());
+      String killerUniqueId = UUIDFetcher.getUUID(player.getName()).toString();
+      int killerKills = statsPlayer.kills(playerUniqueId);
+      int killerDeaths = statsPlayer.deaths(playerUniqueId);
       player.setVelocity(new Vector().multiply(0));
       killer
           .sendMessage(infinitySG.prefix + "§7Du hast " + player.getDisplayName() + " §7getötet!");
       player.sendMessage(infinitySG.prefix + killer.getDisplayName() + " §7hat dich getötet!");
-      infinitySG.stats.addKils(killer.getName(), 1);
-      infinitySG.stats.addDeaths(player.getName(), 1);
-      dyePlayer.addCoins(5);
+      statsPlayer.change(killerUniqueId, killerKills + 1, killerDeaths);
+      statsPlayer.change(playerUniqueId, playerKills, playerDeaths + 1);
       killer.sendMessage(infinitySG.prefix + "§7Du hast für den Kill §a+5 §7Coins bekommen");
-      killer.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 3, 1));
-      player.teleport(infinitySG.locations.getLocation("spawn"));
-      infinitySG.score.setScoreboard(killer);
+      killer.addPotionEffect(new PotionEffect(
+        PotionEffectType.REGENERATION, 20 * 3, 1));
     } else {
       player.setVelocity(new Vector().multiply(0));
       player.sendMessage(infinitySG.prefix + "§7Du bist gestorben!");
-      infinitySG.stats.addDeaths(player.getName(), 1);
+      statsPlayer.change(playerUniqueId, playerKills, playerDeaths + 1);
       infinitySG.itemBuilder.setStartItems(player);
-      player.teleport(infinitySG.locations.getLocation("spawn"));
     }
+    player.teleport(infinitySG.locations.getLocation("spawn"));
     new BukkitRunnable() {
       @Override
       public void run() {
         player.spigot().respawn();
         player.teleport(infinitySG.locations.getLocation("spawn"));
       }
-    }.runTaskLaterAsynchronously(infinitySG.infinitySG, 3);
+    }.runTaskLaterAsynchronously(infinitySG.infinitySG, 2);
   }
 
   @EventHandler
-  public void onRespawn(PlayerRespawnEvent event) {
-    Player player = event.getPlayer();
+  public void playerInitialAfterRespawn(PlayerRespawnEvent playerRespawnEvent) {
+    Player player = playerRespawnEvent.getPlayer();
     player.getInventory().clear();
     infinitySG.itemBuilder.setStartItems(player);
   }

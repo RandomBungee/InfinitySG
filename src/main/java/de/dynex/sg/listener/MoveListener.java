@@ -1,9 +1,4 @@
 package de.dynex.sg.listener;
-/*
-Class was created by RandomBungee
-On 23.03.2020
-At 22:55
-*/
 
 import de.dynex.sg.InfinitySG;
 import org.bukkit.Material;
@@ -14,16 +9,11 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.util.Vector;
 
 public class MoveListener implements Listener {
-
-  InfinitySG infinitySG;
-
-  public MoveListener(InfinitySG infinitySG) {
-    this.infinitySG = infinitySG;
-  }
+  public MoveListener() {}
 
   @EventHandler
-  public void onMove(PlayerMoveEvent event) {
-    Player player = event.getPlayer();
+  public void playerBoostInWaterAndGoldPlate(PlayerMoveEvent playerMoveEvent) {
+    Player player = playerMoveEvent.getPlayer();
     if(player.getLocation().getBlock().getType() == Material.STATIONARY_WATER) {
       Vector vector = player.getLocation().getDirection().multiply(0.9D).setY(0.8D).normalize();
       player.setVelocity(vector);

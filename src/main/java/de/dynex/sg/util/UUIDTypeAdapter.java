@@ -1,9 +1,4 @@
-package de.dynex.sg.utils;
-/*
-Class was created by RandomBungee
-On 23.03.2020
-At 22:27
-*/
+package de.dynex.sg.util;
 
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
@@ -12,6 +7,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 public class UUIDTypeAdapter extends TypeAdapter<UUID> {
+  public UUIDTypeAdapter() {}
 
   @Override
   public void write(JsonWriter out, UUID value)

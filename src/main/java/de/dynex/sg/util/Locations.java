@@ -1,9 +1,4 @@
-package de.dynex.sg.utils;
-/*
-Class was created by RandomBungee
-On 23.03.2020
-At 22:15
-*/
+package de.dynex.sg.util;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,11 +9,15 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Locations {
+  public Locations() {}
 
   public File file = new File("plugins/InfinitySG", "locations.yml");
   public FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
 
-  public void setLocation(String name, Location loc) {
+  public void setLocation(
+    String name,
+    Location loc
+  ) {
     cfg.set(name + ".world", loc.getWorld().getName());
     cfg.set(name + ".x", loc.getX());
     cfg.set(name + ".y", loc.getY());
