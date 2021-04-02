@@ -1,4 +1,4 @@
-package de.dynex.sg.util;
+package com.github.infinitysg.util;
 
 import java.lang.reflect.Constructor;
 import org.bukkit.Bukkit;

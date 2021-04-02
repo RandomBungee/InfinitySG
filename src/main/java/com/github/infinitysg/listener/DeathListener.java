@@ -1,9 +1,13 @@
-package de.dynex.sg.listener;
+package com.github.infinitysg.listener;
 
+import com.github.infinitysg.InfinitySG;
+import com.github.infinitysg.mysql.MySQL;
+import com.github.infinitysg.mysql.api.StatsPlayer;
+import com.github.infinitysg.mysql.api.StatsPlayerRepository;
 import de.dynex.sg.*;
 import de.dynex.sg.mysql.*;
 import de.dynex.sg.mysql.api.*;
-import de.dynex.sg.util.UUIDFetcher;
+import com.github.infinitysg.util.UUIDFetcher;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

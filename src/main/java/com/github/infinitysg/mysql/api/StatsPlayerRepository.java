@@ -1,4 +1,4 @@
-package de.dynex.sg.mysql.api;
+package com.github.infinitysg.mysql.api;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

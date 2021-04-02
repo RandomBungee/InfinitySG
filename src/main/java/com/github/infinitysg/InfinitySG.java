@@ -1,5 +1,17 @@
-package de.dynex.sg;
+package com.github.infinitysg;
 
+import com.github.infinitysg.command.BuildCommand;
+import com.github.infinitysg.command.SetupCommand;
+import com.github.infinitysg.command.StatsCommand;
+import com.github.infinitysg.config.ConfigManager;
+import com.github.infinitysg.listener.CanceledInteractsListener;
+import com.github.infinitysg.listener.DeathListener;
+import com.github.infinitysg.listener.JoinListener;
+import com.github.infinitysg.listener.MoveListener;
+import com.github.infinitysg.mysql.MySQL;
+import com.github.infinitysg.util.ChestFill;
+import com.github.infinitysg.util.ItemBuilder;
+import com.github.infinitysg.util.Locations;
 import de.dynex.sg.command.*;
 import de.dynex.sg.listener.*;
 import de.dynex.sg.mysql.*;

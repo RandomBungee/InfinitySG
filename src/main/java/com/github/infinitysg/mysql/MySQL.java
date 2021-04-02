@@ -1,4 +1,4 @@
-package de.dynex.sg.mysql;
+package com.github.infinitysg.mysql;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

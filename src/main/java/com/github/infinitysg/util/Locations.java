@@ -1,4 +1,4 @@
-package de.dynex.sg.util;
+package com.github.infinitysg.util;
 
 import java.io.File;
 import java.io.IOException;

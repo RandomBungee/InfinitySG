@@ -1,4 +1,4 @@
-package de.dynex.sg.config;
+package com.github.infinitysg.config;
 
 import java.io.File;
 import java.io.IOException;

@@ -1,6 +1,6 @@
-package de.dynex.sg.listener;
+package com.github.infinitysg.listener;
 
-import de.dynex.sg.InfinitySG;
+import com.github.infinitysg.InfinitySG;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

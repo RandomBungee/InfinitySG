@@ -1,6 +1,6 @@
-package de.dynex.sg.util;
+package com.github.infinitysg.util;
 
-import de.dynex.sg.InfinitySG;
+import com.github.infinitysg.InfinitySG;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;

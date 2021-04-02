@@ -1,4 +1,4 @@
-package de.dynex.sg.mysql.api;
+package com.github.infinitysg.mysql.api;
 
 public interface StatsPlayer {
   void create(String uniqueId, int kills, int deaths);

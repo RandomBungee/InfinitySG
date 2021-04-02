@@ -1,4 +1,4 @@
-package de.dynex.sg.util;
+package com.github.infinitysg.util;
 
 import java.util.ArrayList;
 import java.util.List;

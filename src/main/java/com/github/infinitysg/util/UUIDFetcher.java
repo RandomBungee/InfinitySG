@@ -1,4 +1,4 @@
-package de.dynex.sg.util;
+package com.github.infinitysg.util;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

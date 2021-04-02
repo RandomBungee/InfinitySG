@@ -1,10 +1,10 @@
-package de.dynex.sg.command;
+package com.github.infinitysg.command;
 
-import de.dynex.sg.InfinitySG;
-import de.dynex.sg.mysql.MySQL;
-import de.dynex.sg.mysql.api.StatsPlayer;
-import de.dynex.sg.mysql.api.StatsPlayerRepository;
-import de.dynex.sg.util.UUIDFetcher;
+import com.github.infinitysg.mysql.MySQL;
+import com.github.infinitysg.InfinitySG;
+import com.github.infinitysg.mysql.api.StatsPlayer;
+import com.github.infinitysg.mysql.api.StatsPlayerRepository;
+import com.github.infinitysg.util.UUIDFetcher;
 import java.util.UUID;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
